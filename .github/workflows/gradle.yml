@@ -10,6 +10,6 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v1
         with:
-          java-version: zulu13
+          java-version: 13.0.1
       - name: Run tests
         run: ./gradlew check
