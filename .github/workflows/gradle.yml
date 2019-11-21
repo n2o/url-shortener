@@ -10,6 +10,6 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v1
         with:
-          java-version: 13
+          java-version: openjdk13
       - name: Run tests
         run: ./gradlew check
