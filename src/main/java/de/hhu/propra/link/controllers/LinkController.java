@@ -108,7 +108,7 @@ public class LinkController {
         // determine a suitable abbreviation taking the paths in consideration
         // ex: "sub.example.com/path/to/index.html" -> "sbxmplpti"
         String[] domainAndPaths = schemelessUrl.split("/");
-        String tmp_abbreviation = unvocalize(domainAndPaths[0]);
+        String tmp_abbreviation = unvowelize(domainAndPaths[0]);
         for(int i = 1; i < domainAndPaths.length; i++){
             tmp_abbreviation += domainAndPaths[i].charAt(0);
         }
@@ -125,28 +125,28 @@ public class LinkController {
     }
 
     /**
-     * @param domain The domain name where the vocals, dots and the TLD should be removed from
-     * @return the String without any vocals, dots and the TLD
+     * @param domain The domain name where the vowels, dots and the TLD should be removed from
+     * @return the String without any vowels, dots and the TLD
      */
-    private String unvocalize(String domain) {
-        String unvocalized = "";
+    private String unvowelize(String domain) {
+        String unvowelized = "";
 
         for(int i = 0; i < domain.lastIndexOf('.'); i++){
-            if(! (isVocal(domain.charAt(i)) || domain.charAt(i) == '.') ){
-                unvocalized += domain.charAt(i);
+            if(! (isVowel(domain.charAt(i)) || domain.charAt(i) == '.') ){
+                unvowelized += domain.charAt(i);
             }
         }
 
-        return unvocalized;
+        return unvowelized;
     }
 
     /**
-     * returns true if entered letter is a vocal, else false.
+     * returns true if entered letter is a vowel, else false.
      * a, e, i, o, u are vocals.
      * @param letter The letter to check
-     * @return true if letter is a vocal, false elsewise
+     * @return true if letter is a vowel, false elsewise
      */
-    private boolean isVocal(char letter) {
+    private boolean isVowel(char letter) {
         switch(letter){
             case 'a':
             case 'e':
