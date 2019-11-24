@@ -39,6 +39,12 @@ public class LinkController {
     public String newLink(@ModelAttribute @Valid Link link, BindingResult bindingResult) {
         this.currentLink = link;
 
+        // suggest an abbreviation if not set
+        if(link.getAbbreviation().isEmpty()){
+            String abbrevation = makeAbbrevation(new String(link.getUrl()));
+            link.setAbbreviation(abbrevation);
+        }
+
         if (bindingResult.hasErrors()) {
             return "index";
         }
@@ -81,5 +87,73 @@ public class LinkController {
     private void setMessages(String errorMessage, String successMessage) {
         this.errorMessage = errorMessage;
         this.successMessage = successMessage;
+    }
+
+    /**
+     * creates a not yet used viable abbrevation for the entered url
+     * @param url The URL that is to be shortened
+     * @return the abbrevation for the long URL
+     */
+    private String makeAbbrevation(String url){
+
+        // removing the scheme from the URL
+        // "https://example.com" -> "example.com"
+        int schemelessUrlindex = url.indexOf("://");
+        String schemelessUrl = url;
+        if(schemelessUrlindex > 0) {
+            schemelessUrl = url.substring(schemelessUrlindex + 3, url.length());
+        } else
+            return url; // URL possibly not correct, so just return it
+
+        // determine a suitable abbreviation taking the paths in consideration
+        // ex: "sub.example.com/path/to/index.html" -> "sbxmplpti"
+        String[] domainAndPaths = schemelessUrl.split("/");
+        String tmp_abbreviation = unvocalize(domainAndPaths[0]);
+        for(int i = 1; i < domainAndPaths.length; i++){
+            tmp_abbreviation += domainAndPaths[i].charAt(0);
+        }
+
+        // create another abbreviation if the preferred one already exists
+        int i = 1;
+        String abbrevation = tmp_abbreviation;
+        while( ! linkRepository.findById(abbrevation).isEmpty() ){
+            abbrevation = new String(tmp_abbreviation + i);
+            i += 1;
+        }
+
+        return abbrevation;
+    }
+
+    /**
+     * @param domain The domain name where the vocals, dots and the TLD should be removed from
+     * @return the String without any vocals, dots and the TLD
+     */
+    private String unvocalize(String domain) {
+        String unvocalized = "";
+
+        for(int i = 0; i < domain.lastIndexOf('.'); i++){
+            if(! (isVocal(domain.charAt(i)) || domain.charAt(i) == '.') ){
+                unvocalized += domain.charAt(i);
+            }
+        }
+
+        return unvocalized;
+    }
+
+    /**
+     * returns true if entered letter is a vocal, else false.
+     * a, e, i, o, u are vocals.
+     * @param letter The letter to check
+     * @return true if letter is a vocal, false elsewise
+     */
+    private boolean isVocal(char letter) {
+        switch(letter){
+            case 'a':
+            case 'e':
+            case 'i':
+            case 'o':
+            case 'u': return true;
+            default:  return false;
+        }
     }
 }
