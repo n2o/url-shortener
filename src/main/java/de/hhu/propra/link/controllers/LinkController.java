@@ -105,6 +105,10 @@ public class LinkController {
         } else
             return url; // URL possibly not correct, so just return it
 
+        if(schemelessUrl.indexOf("www") == 0){
+            schemelessUrl = schemelessUrl.substring(3);
+        }
+
         // determine a suitable abbreviation taking the paths in consideration
         // ex: "sub.example.com/path/to/index.html" -> "sbxmplpti"
         String[] domainAndPaths = schemelessUrl.split("/");
