@@ -39,10 +39,8 @@ public class LinkController {
     public String newLink(@ModelAttribute @Valid Link link, BindingResult bindingResult) {
         this.currentLink = link;
 
-        // suggest an abbreviation if not set
         if (link.getAbbreviation().isEmpty()) {
             linkService.createAbbreviation(link);
-
         }
 
         if (bindingResult.hasErrors()) {
@@ -61,7 +59,7 @@ public class LinkController {
 
     @GetMapping("/{abbreviation}")
     public String redirectUrl(@PathVariable String abbreviation) {
-        setMessages(null, null);
+        resetMessages();
         Optional<Link> link = linkService.findById(abbreviation);
         return link.map(value -> "redirect:" + value.getUrl()).orElse("redirect:/");
     }
@@ -79,7 +77,7 @@ public class LinkController {
     }
 
     /**
-     * Set Error and Success Messages for the frontend
+     * Set Error and Success Messages for the frontend.
      *
      * @param errorMessage   Describe error
      * @param successMessage Send a joyful message to the user
@@ -87,5 +85,12 @@ public class LinkController {
     private void setMessages(String errorMessage, String successMessage) {
         this.errorMessage = errorMessage;
         this.successMessage = successMessage;
+    }
+
+    /**
+     * Reset UI Messages.
+     */
+    private void resetMessages() {
+        setMessages(null, null);
     }
 }

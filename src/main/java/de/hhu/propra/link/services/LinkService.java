@@ -20,7 +20,7 @@ public class LinkService {
      * @param url The URL that is to be shortened
      * @return the abbrevation for the long URL
      */
-    private String makeAbbrevation(String url) {
+    private String autoAbbreviation(String url) {
         String schemelessUrl = removeProtocol(url);
         if (schemelessUrl.indexOf("www") == 0) {
             schemelessUrl = schemelessUrl.substring(3);
@@ -126,7 +126,6 @@ public class LinkService {
     }
 
     public void createAbbreviation(Link link) {
-        String abbrevation = makeAbbrevation(link.getUrl());
-        link.setAbbreviation(abbrevation);
+        link.setAbbreviation(autoAbbreviation(link.getUrl()));
     }
 }
