@@ -12,7 +12,6 @@ import javax.validation.constraints.NotEmpty;
 @RedisHash("Link")
 public class Link {
     @Id
-    @NotEmpty
     private String abbreviation;
 
     @URL
