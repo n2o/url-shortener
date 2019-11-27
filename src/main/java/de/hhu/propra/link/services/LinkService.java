@@ -18,7 +18,7 @@ public class LinkService {
      * Creates a not yet used viable abbreviation for the entered URL.
      *
      * @param url The URL that is to be shortened
-     * @return the abbrevation for the long URL
+     * @return the abbreviation for the long URL
      */
     private String autoAbbreviation(String url) {
         String schemelessUrl = removeProtocol(url);
