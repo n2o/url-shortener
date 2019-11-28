@@ -37,14 +37,14 @@ public class LinkController {
 
     @PostMapping("/")
     public String newLink(@ModelAttribute @Valid Link link, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "index";
+        }
+
         this.currentLink = link;
 
         if (link.getAbbreviation().isEmpty()) {
             linkService.createAbbreviation(link);
-        }
-
-        if (bindingResult.hasErrors()) {
-            return "index";
         }
 
         if (linkService.findById(link.getAbbreviation()).isEmpty()) {
