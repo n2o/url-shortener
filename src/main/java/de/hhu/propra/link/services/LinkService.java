@@ -20,22 +20,26 @@ public class LinkService {
     /**
      * Creates a not yet used viable abbreviation for the entered URL.
      *
-     * @param urlString The URL that is to be shortened
-     * @return the abbreviation for the long URL
+     * @param urlString the URL that is to be shortened
+     * @return the abbreviation for the long URL or Optional.empty() if no such abbreviation can be generated
      */
-    private String autoAbbreviation(String urlString) {
+    private Optional<String> autoAbbreviation(String urlString) {
         URL url;
         try {
             url = new URL(urlString);
-        } catch (MalformedURLException e) {
-            throw new IllegalArgumentException(e);
+        } catch (MalformedURLException ignored) {
+            return Optional.empty();
         }
 
         String host = getStrippedHost(url);
         String[] path = getSplitPath(url);
 
         StringBuilder abbreviation = makeAbbreviation(host, path);
-        return findNextFreeAbbreviation(abbreviation);
+        if (abbreviation.length() == 0) {
+            return Optional.empty();
+        }
+
+        return Optional.of(findNextFreeAbbreviation(abbreviation));
     }
 
     /**
@@ -137,7 +141,7 @@ public class LinkService {
      * Check if character is a vowel.
      *
      * @param letter The letter to check
-     * @return true if letter is a vowel, false elsewise
+     * @return true if letter is a vowel, false otherwise
      */
     private boolean isVowel(char letter) {
         switch (letter) {
@@ -168,7 +172,15 @@ public class LinkService {
         linkRepository.save(link);
     }
 
-    public void createAbbreviation(Link link) {
-        link.setAbbreviation(autoAbbreviation(link.getUrl()));
+    /**
+     * Generates an abbreviation for the given link, setting it directly.
+     *
+     * @param link the link to be abbreviated
+     * @return true on successful operation, false otherwise
+     */
+    public boolean createAbbreviation(Link link) {
+        Optional<String> abbreviation = autoAbbreviation(link.getUrl());
+        abbreviation.ifPresent(link::setAbbreviation);
+        return abbreviation.isPresent();
     }
 }
