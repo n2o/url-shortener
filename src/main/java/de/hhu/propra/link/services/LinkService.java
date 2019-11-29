@@ -4,6 +4,9 @@ import de.hhu.propra.link.entities.Link;
 import de.hhu.propra.link.repositories.LinkRepository;
 import org.springframework.stereotype.Component;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Arrays;
 import java.util.Optional;
 
 @Component
@@ -17,45 +20,87 @@ public class LinkService {
     /**
      * Creates a not yet used viable abbreviation for the entered URL.
      *
-     * @param url The URL that is to be shortened
-     * @return the abbreviation for the long URL
+     * @param urlString the URL that is to be shortened
+     * @return the abbreviation for the long URL or Optional.empty() if no such abbreviation can be generated
      */
-    private String autoAbbreviation(String url) {
-        String schemelessUrl = removeProtocol(url);
-        if (schemelessUrl.indexOf("www") == 0) {
-            schemelessUrl = schemelessUrl.substring(3);
+    private Optional<String> autoAbbreviation(String urlString) {
+        URL url;
+        try {
+            url = new URL(urlString);
+        } catch (MalformedURLException ignored) {
+            return Optional.empty();
         }
-        StringBuilder abbreviation = makeAbbreviationFromPath(schemelessUrl);
-        return findNextFreeAbbreviation(abbreviation);
+
+        String host = getStrippedHost(url);
+        String[] path = getSplitPath(url);
+
+        StringBuilder abbreviation = makeAbbreviation(host, path);
+        if (abbreviation.length() == 0) {
+            return Optional.empty();
+        }
+
+        return Optional.of(findNextFreeAbbreviation(abbreviation));
     }
 
     /**
-     * Remove leading http(s?):// from URL.
+     * Remove unwanted subdomains (like "www") and the TLD part from the host part of the given URL.
      *
-     * @param url current url
-     * @return (possibly) stripped url
+     * @param url the URL
+     * @return the stripped host part
      */
-    private String removeProtocol(String url) {
-        int schemelessUrlindex = url.indexOf("://");
-        if (schemelessUrlindex > 0) {
-            return url.substring(schemelessUrlindex + 3);
-        } else {
-            return url;
+    private String getStrippedHost(URL url) {
+        String host = url.getHost();
+
+        String www = "www.";
+        if (host.startsWith(www)) {
+            host = host.substring(www.length());
         }
+
+        host = stripAfterLastDot(host);
+
+        return host;
+    }
+
+    /**
+     * Split the path part of the given URL into pieces.
+     *
+     * @param url the URL
+     * @return the split path part
+     */
+    private String[] getSplitPath(URL url) {
+        String path = url.getPath();
+        return Arrays.stream(path.split("/"))
+                .filter(s -> !s.isEmpty())
+                .map(this::stripAfterLastDot)
+                .toArray(String[]::new);
+    }
+
+    /**
+     * Strip everything after the last dot, if that dot is not first character.
+     *
+     * @param s the string
+     * @return the stripped string
+     */
+    private String stripAfterLastDot(String s) {
+        int lastDot = s.lastIndexOf('.');
+        if (lastDot > 0) {
+            s = s.substring(0, lastDot);
+        }
+        return s;
     }
 
     /**
      * Determine a suitable abbreviation taking the paths into consideration.
      * ex: "sub.example.com/path/to/index.html" -> "sbxmplpti"
      *
-     * @param schemelessUrl part of URL
+     * @param host      stripped host part of the URL
+     * @param pathParts split path parts of the URL
      * @return current abbreviation
      */
-    private StringBuilder makeAbbreviationFromPath(String schemelessUrl) {
-        String[] domainAndPaths = schemelessUrl.split("/");
-        StringBuilder tmp_abbreviation = new StringBuilder(unvowelize(domainAndPaths[0]));
-        for (int i = 1; i < domainAndPaths.length; i++) {
-            tmp_abbreviation.append(domainAndPaths[i].charAt(0));
+    private StringBuilder makeAbbreviation(String host, String[] pathParts) {
+        StringBuilder tmp_abbreviation = new StringBuilder(unvowelize(host));
+        for (String path : pathParts) {
+            tmp_abbreviation.append(path.charAt(0));
         }
         return tmp_abbreviation;
     }
@@ -71,20 +116,22 @@ public class LinkService {
         String abbrevation = tmp_abbreviation.toString();
         while (linkRepository.findById(abbrevation).isPresent()) {
             abbrevation = tmp_abbreviation.toString() + i;
-            i += 1;
+            i++;
         }
         return abbrevation;
     }
 
     /**
-     * @param domain The domain name where the vowels, dots and the TLD should be removed from
-     * @return the String without any vowels, dots and the TLD
+     * Strip the string of vowels and dots.
+     *
+     * @param s the string
+     * @return the string without vowels and dots
      */
-    private String unvowelize(String domain) {
+    private String unvowelize(String s) {
         StringBuilder unvowelized = new StringBuilder();
-        for (int i = 0; i < domain.lastIndexOf('.'); i++) {
-            if (!(isVowel(domain.charAt(i)) || domain.charAt(i) == '.')) {
-                unvowelized.append(domain.charAt(i));
+        for (char c : s.toCharArray()) {
+            if (!isVowel(c) && c != '.') {
+                unvowelized.append(c);
             }
         }
         return unvowelized.toString();
@@ -94,7 +141,7 @@ public class LinkService {
      * Check if character is a vowel.
      *
      * @param letter The letter to check
-     * @return true if letter is a vowel, false elsewise
+     * @return true if letter is a vowel, false otherwise
      */
     private boolean isVowel(char letter) {
         switch (letter) {
@@ -125,7 +172,15 @@ public class LinkService {
         linkRepository.save(link);
     }
 
-    public void createAbbreviation(Link link) {
-        link.setAbbreviation(autoAbbreviation(link.getUrl()));
+    /**
+     * Generates an abbreviation for the given link, setting it directly.
+     *
+     * @param link the link to be abbreviated
+     * @return true on successful operation, false otherwise
+     */
+    public boolean createAbbreviation(Link link) {
+        Optional<String> abbreviation = autoAbbreviation(link.getUrl());
+        abbreviation.ifPresent(link::setAbbreviation);
+        return abbreviation.isPresent();
     }
 }

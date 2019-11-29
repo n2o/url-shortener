@@ -36,24 +36,28 @@ public class LinkController {
     }
 
     @PostMapping("/")
-    public String newLink(@ModelAttribute @Valid Link link, BindingResult bindingResult) {
+    public String newLink(@ModelAttribute @Valid Link link, BindingResult bindingResult, Model model) {
+        this.currentLink = link;
+
         if (bindingResult.hasErrors()) {
+            setMessages("The link or abbreviation is invalid. Try another one.", null);
+            model.addAttribute("links", linkService.allLinks());
+            model.addAttribute("link", currentLink);
+            model.addAttribute("error", errorMessage);
+            model.addAttribute("success", successMessage);
             return "index";
         }
 
-        this.currentLink = link;
-
-        if (link.getAbbreviation().isEmpty()) {
-            linkService.createAbbreviation(link);
-        }
-
-        if (linkService.findById(link.getAbbreviation()).isEmpty()) {
+        if (link.getAbbreviation().isEmpty() && !linkService.createAbbreviation(link)) {
+            setMessages("The link could not be shortened automatically. Supply an abbreviation.", null);
+        } else if (linkService.findById(link.getAbbreviation()).isPresent()) {
+            setMessages("The short link already exists. Try another one.", null);
+        } else {
             linkService.save(link);
             setMessages(null, "Successfully added a new short link!");
             this.currentLink = new Link();
-        } else {
-            setMessages("The short link already exists. Try another one.", null);
         }
+
         return "redirect:/";
     }
 
