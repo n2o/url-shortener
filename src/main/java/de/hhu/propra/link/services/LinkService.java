@@ -23,7 +23,7 @@ public class LinkService {
      * @param urlString the URL that is to be shortened
      * @return the abbreviation for the long URL or Optional.empty() if no such abbreviation can be generated
      */
-    private Optional<String> autoAbbreviation(String urlString) {
+    Optional<String> autoAbbreviation(String urlString) {
         URL url;
         try {
             url = new URL(urlString);
@@ -48,7 +48,7 @@ public class LinkService {
      * @param url the URL
      * @return the stripped host part
      */
-    private String getStrippedHost(URL url) {
+    String getStrippedHost(URL url) {
         String host = url.getHost();
 
         String www = "www.";
@@ -67,7 +67,7 @@ public class LinkService {
      * @param url the URL
      * @return the split path part
      */
-    private String[] getSplitPath(URL url) {
+    String[] getSplitPath(URL url) {
         String path = url.getPath();
         return Arrays.stream(path.split("/"))
                 .filter(s -> !s.isEmpty())
@@ -81,7 +81,7 @@ public class LinkService {
      * @param s the string
      * @return the stripped string
      */
-    private String stripAfterLastDot(String s) {
+    String stripAfterLastDot(String s) {
         int lastDot = s.lastIndexOf('.');
         if (lastDot > 0) {
             s = s.substring(0, lastDot);
@@ -97,7 +97,7 @@ public class LinkService {
      * @param pathParts split path parts of the URL
      * @return current abbreviation
      */
-    private StringBuilder makeAbbreviation(String host, String[] pathParts) {
+    StringBuilder makeAbbreviation(String host, String[] pathParts) {
         StringBuilder tmp_abbreviation = new StringBuilder(unvowelize(host));
         for (String path : pathParts) {
             tmp_abbreviation.append(path.charAt(0));
@@ -111,7 +111,7 @@ public class LinkService {
      * @param tmp_abbreviation current abbreviation
      * @return abbreviation with appended number for uniqueness
      */
-    private String findNextFreeAbbreviation(StringBuilder tmp_abbreviation) {
+    String findNextFreeAbbreviation(StringBuilder tmp_abbreviation) {
         int i = 1;
         String abbrevation = tmp_abbreviation.toString();
         while (linkRepository.findById(abbrevation).isPresent()) {
@@ -127,7 +127,7 @@ public class LinkService {
      * @param s the string
      * @return the string without vowels and dots
      */
-    private String unvowelize(String s) {
+    String unvowelize(String s) {
         StringBuilder unvowelized = new StringBuilder();
         for (char c : s.toCharArray()) {
             if (!isVowel(c) && c != '.') {
@@ -143,7 +143,7 @@ public class LinkService {
      * @param letter The letter to check
      * @return true if letter is a vowel, false otherwise
      */
-    private boolean isVowel(char letter) {
+    boolean isVowel(char letter) {
         switch (letter) {
             case 'a':
             case 'e':
