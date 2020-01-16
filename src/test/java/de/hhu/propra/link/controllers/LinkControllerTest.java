@@ -33,8 +33,6 @@ class LinkControllerTest {
                                 .param("url", "http://www.abc.de")
                 )
                 .andExpect(status().is3xxRedirection());
-                .param("abbreviation", "abc")
-                .param("url", "http://www.abc.de")).andExpect(status().is3xxRedirection());
     }
 
 }
