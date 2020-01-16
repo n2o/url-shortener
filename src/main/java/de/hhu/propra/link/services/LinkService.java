@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.Locale;
 import java.util.Optional;
 
 @Component
@@ -24,6 +25,8 @@ public class LinkService {
      * @return the abbreviation for the long URL or Optional.empty() if no such abbreviation can be generated
      */
     Optional<String> autoAbbreviation(String urlString) {
+        urlString = urlString.toLowerCase(Locale.ROOT);
+
         URL url;
         try {
             url = new URL(urlString);
@@ -130,7 +133,7 @@ public class LinkService {
     String unvowelize(String s) {
         StringBuilder unvowelized = new StringBuilder();
         for (char c : s.toCharArray()) {
-            if (!isVowel(c) && c != '.') {
+            if (!isLowerCaseEnglishVowel(c) && c != '.') {
                 unvowelized.append(c);
             }
         }
@@ -138,12 +141,12 @@ public class LinkService {
     }
 
     /**
-     * Check if character is a vowel.
+     * Check if character is a lower case vowel.
      *
      * @param letter The letter to check
-     * @return true if letter is a vowel, false otherwise
+     * @return true if letter is a vowel and lower case, false otherwise
      */
-    boolean isVowel(char letter) {
+    boolean isLowerCaseEnglishVowel(char letter) {
         switch (letter) {
             case 'a':
             case 'e':
