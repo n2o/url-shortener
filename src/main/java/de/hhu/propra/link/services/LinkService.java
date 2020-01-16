@@ -133,7 +133,7 @@ public class LinkService {
     String unvowelize(String s) {
         StringBuilder unvowelized = new StringBuilder();
         for (char c : s.toCharArray()) {
-            if (!isLowerCaseVowel(c) && c != '.') {
+            if (!isLowerCaseEnglishVowel(c) && c != '.') {
                 unvowelized.append(c);
             }
         }
@@ -146,7 +146,7 @@ public class LinkService {
      * @param letter The letter to check
      * @return true if letter is a vowel and lower case, false otherwise
      */
-    boolean isLowerCaseVowel(char letter) {
+    boolean isLowerCaseEnglishVowel(char letter) {
         switch (letter) {
             case 'a':
             case 'e':
