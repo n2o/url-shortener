@@ -4,6 +4,7 @@ build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**
 !**/src/test/**
+*.log
 
 ### STS ###
 .apt_generated
@@ -30,4 +31,5 @@ out/
 
 ### VS Code ###
 .vscode/
+
 node_modules/

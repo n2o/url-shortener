@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>Shorty</title>
   <link href="../static/node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"
-        th:href="'node_modules/bootstrap/dist/css/bootstrap.min.css'">
+        th:href="@{node_modules/bootstrap/dist/css/bootstrap.min.css}">
 </head>
 <body>
 <div class="container pt-3">
@@ -20,13 +20,13 @@
   </div>
 
   <div id="success-message" th:classappend="${success != null} ? 'alert alert-success'" th:text="${success}">
-    Jeah, it works!
+    Yeah, it works!
   </div>
 
   <div id="new-link">
-    <form action="#" method="post" th:action="''" th:object="${link}">
+    <form method="post" th:object="${link}">
       <div class="form-group">
-        <label for="url">Add the destination URL of your short link *</label>
+        <label for="url">Add the destination URL of your short link</label>
         <input class="form-control" id="url" name="url" placeholder="URL" required
                th:errorclass="is-invalid" th:value="*{url}" type="url">
         <span class="text-danger" th:errors="*{url}" th:if="${#fields.hasErrors('url')}"></span>
@@ -76,7 +76,9 @@
 </div>
 </body>
 <script src="../static/node_modules/jquery/dist/jquery.min.js"
-        th:src="'node_modules/jquery/dist/jquery.min.js'"></script>
+        th:src="@{node_modules/jquery/dist/jquery.min.js}"></script>
+<script src="../static/node_modules/popper.js/dist/popper.min.js"
+        th:src="@{node_modules/jquery/popper.js/dist/popper.min.js}"></script>
 <script src="../static/node_modules/bootstrap/dist/js/bootstrap.min.js"
-        th:src="'node_modules/bootstrap/dist/js/bootstrap.min.js'"></script>
+        th:src="@{node_modules/bootstrap/dist/js/bootstrap.min.js}"></script>
 </html>
