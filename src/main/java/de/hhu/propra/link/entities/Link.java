@@ -1,6 +1,6 @@
 package de.hhu.propra.link.entities;
 
-import com.github.slugify.Slugify;
+import de.hhu.propra.link.util.StringUtil;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.URL;
@@ -24,7 +24,6 @@ public class Link {
     private String url;
 
     public void setAbbreviation(String abbreviation) {
-        var slg = new Slugify();
-        this.abbreviation = slg.slugify(abbreviation);
+        this.abbreviation = StringUtil.slugify(abbreviation);
     }
 }

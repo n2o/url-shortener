@@ -1,8 +1,14 @@
 package de.hhu.propra.link.util;
 
+import com.github.slugify.Slugify;
+
 public class StringUtil {
 
     private StringUtil() {
+    }
+
+    public static String slugify(String string) {
+        return new Slugify().slugify(string);
     }
 
     /**
