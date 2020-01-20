@@ -3,7 +3,6 @@ package de.hhu.propra.link.controllers;
 import de.hhu.propra.link.entities.Link;
 import de.hhu.propra.link.services.LinkService;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -27,24 +26,16 @@ public class LinkController {
     }
 
     @GetMapping("/")
-    public String index(Model model) {
-        model.addAttribute("links", linkService.allLinks());
-        model.addAttribute("link", currentLink);
-        model.addAttribute("error", errorMessage);
-        model.addAttribute("success", successMessage);
+    public String index() {
         return "index";
     }
 
     @PostMapping("/")
-    public String newLink(@ModelAttribute @Valid Link link, BindingResult bindingResult, Model model) {
+    public String newLink(@ModelAttribute @Valid Link link, BindingResult bindingResult) {
         this.currentLink = link;
 
         if (bindingResult.hasErrors()) {
             setMessages("The link or abbreviation is invalid. Try another one.", null);
-            model.addAttribute("links", linkService.allLinks());
-            model.addAttribute("link", currentLink);
-            model.addAttribute("error", errorMessage);
-            model.addAttribute("success", successMessage);
             return "index";
         }
 
@@ -96,5 +87,30 @@ public class LinkController {
      */
     private void resetMessages() {
         setMessages(null, null);
+    }
+
+    @ModelAttribute("maxAbbreviationLength")
+    public int getMaxAbbreviationLength() {
+        return Link.MAX_ABBREVIATION_LENGTH;
+    }
+
+    @ModelAttribute("links")
+    public Iterable<Link> getLinks() {
+        return linkService.allLinks();
+    }
+
+    @ModelAttribute("link")
+    public Link getLink() {
+        return currentLink;
+    }
+
+    @ModelAttribute("error")
+    public String getError() {
+        return errorMessage;
+    }
+
+    @ModelAttribute("success")
+    public String getSuccess() {
+        return successMessage;
     }
 }
