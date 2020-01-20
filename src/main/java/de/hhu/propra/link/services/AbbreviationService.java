@@ -75,7 +75,7 @@ public class AbbreviationService {
 
     /**
      * Determine a suitable abbreviation taking the paths into consideration.
-     * ex: "https://sub.example.com/path/to/index.html" -> "sbxmplpti"
+     * ex: "https://www.sub.example.com/path/to/index.html" -> "sbxmplpti"
      *
      * @param host      stripped host part of the URL
      * @param pathParts split path parts of the URL

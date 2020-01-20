@@ -35,7 +35,7 @@ public class LinkService {
     }
 
     /**
-     * Generates an abbreviation for the given link, setting it directly.
+     * Generate a new abbreviation for the given link, setting it directly.
      *
      * @param link the link to be abbreviated
      * @return true on successful operation, false otherwise
