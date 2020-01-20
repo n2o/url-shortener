@@ -12,6 +12,9 @@ import java.util.Optional;
 
 @Component
 public class LinkService {
+
+    private static final String WWW_PREFIX = "www.";
+
     private final LinkRepository linkRepository;
 
     public LinkService(LinkRepository linkRepository) {
@@ -54,9 +57,8 @@ public class LinkService {
     String getStrippedHost(URL url) {
         String host = url.getHost();
 
-        String www = "www.";
-        if (host.startsWith(www)) {
-            host = host.substring(www.length());
+        if (host.startsWith(WWW_PREFIX)) {
+            host = host.substring(WWW_PREFIX.length());
         }
 
         host = stripAfterLastDot(host);
@@ -94,34 +96,34 @@ public class LinkService {
 
     /**
      * Determine a suitable abbreviation taking the paths into consideration.
-     * ex: "sub.example.com/path/to/index.html" -> "sbxmplpti"
+     * ex: "https://sub.example.com/path/to/index.html" -> "sbxmplpti"
      *
      * @param host      stripped host part of the URL
      * @param pathParts split path parts of the URL
      * @return current abbreviation
      */
     StringBuilder makeAbbreviation(String host, String[] pathParts) {
-        StringBuilder tmp_abbreviation = new StringBuilder(unvowelize(host));
+        StringBuilder tmpAbbreviation = new StringBuilder(unvowelize(host));
         for (String path : pathParts) {
-            tmp_abbreviation.append(path.charAt(0));
+            tmpAbbreviation.append(path.charAt(0));
         }
-        return tmp_abbreviation;
+        return tmpAbbreviation;
     }
 
     /**
-     * Create another abbreviation if the preferred one already exists
+     * Create the abbreviation of the {@link Link#MAX_ABBREVIATION_LENGTH maximum length}, generating a new one if the preferred one already exists.
      *
-     * @param tmp_abbreviation current abbreviation
-     * @return abbreviation with appended number for uniqueness
+     * @param tmpAbbreviation current abbreviation candidate
+     * @return the candidate as is or - when necessary - the candidate with appended number for uniqueness
      */
-    String findNextFreeAbbreviation(StringBuilder tmp_abbreviation) {
-        int i = 1;
-        String abbrevation = tmp_abbreviation.toString();
-        while (linkRepository.findById(abbrevation).isPresent()) {
-            abbrevation = tmp_abbreviation.toString() + i;
-            i++;
+    String findNextFreeAbbreviation(StringBuilder tmpAbbreviation) {
+        int i = 0;
+        String abbreviation = truncateString(tmpAbbreviation.toString(), Link.MAX_ABBREVIATION_LENGTH);
+        while (linkRepository.findById(abbreviation).isPresent()) {
+            String numberString = String.valueOf(++i);
+            abbreviation = truncateString(tmpAbbreviation.toString(), Link.MAX_ABBREVIATION_LENGTH - numberString.length()) + numberString;
         }
-        return abbrevation;
+        return abbreviation;
     }
 
     /**
@@ -141,10 +143,10 @@ public class LinkService {
     }
 
     /**
-     * Check if character is a lower case vowel.
+     * Check if character is a lower case vowel of the english language.
      *
      * @param letter The letter to check
-     * @return true if letter is a vowel and lower case, false otherwise
+     * @return true if letter is a lower case vowel of the english language, false otherwise
      */
     boolean isLowerCaseEnglishVowel(char letter) {
         switch (letter) {
@@ -157,6 +159,17 @@ public class LinkService {
             default:
                 return false;
         }
+    }
+
+    /**
+     * Truncate a string to the given maximum length.
+     *
+     * @param s         string to be truncated
+     * @param maxLength maximum length
+     * @return truncated string
+     */
+    String truncateString(String s, int maxLength) {
+        return s.substring(0, Math.min(s.length(), maxLength));
     }
 
     public Iterable<Link> allLinks() {
