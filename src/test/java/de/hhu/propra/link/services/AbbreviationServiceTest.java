@@ -20,6 +20,6 @@ class AbbreviationServiceTest {
     void testAbbreviationLong() {
         String urlString = "https://www.sub.example.com/path/to/index.html";
         Optional<String> result = abbreviationService.generateAbbreviation(urlString);
-        assertThat(result).contains("sbxmplpti");
+        assertThat(result).isEqualTo("sbxmplpti");
     }
 }
