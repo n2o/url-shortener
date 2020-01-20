@@ -15,12 +15,12 @@
     Create personalized short-links
   </p>
 
-  <div id="error-message" th:classappend="${error != null} ? 'alert alert-warning'" th:text="${error}">
+  <div id="error-message" class="alert alert-warning" th:if="${error} != null" th:text="${error}">
     Some error message
   </div>
 
-  <div id="success-message" th:classappend="${success != null} ? 'alert alert-success'" th:text="${success}">
-    Yeah, it works!
+  <div id="success-message" class="alert alert-success" th:if="${success} != null" th:text="${success}">
+    Some success message
   </div>
 
   <div id="new-link">
@@ -53,19 +53,19 @@
       </tr>
       </thead>
       <tbody th:remove="all-but-first">
-      <tr th:each="l : ${links}">
+      <tr th:each="link : ${links}" th:object="${link}">
         <td>
-          <span th:text="${l.abbreviation}">
+          <span th:text="*{abbreviation}">
             hhu
           </span>
         </td>
         <td>
-          <span th:text="${l.url}">
+          <span th:text="*{url}">
             https://hhu.de
           </span>
         </td>
         <td>
-          <form action="#" method="POST" th:action="'/' + ${l.abbreviation} + '/delete'">
+          <form method="post" th:action="@{/{abbreviation}/delete(abbreviation=*{abbreviation})}">
             <input class="btn btn-outline-dark btn-sm" type="submit" value="Delete">
           </form>
         </td>
