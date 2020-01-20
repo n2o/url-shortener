@@ -34,7 +34,8 @@
       <div class="form-group">
         <label for="abbreviation">Please add an (optional) name for your short link</label>
         <input class="form-control" id="abbreviation" name="abbreviation" placeholder="Abbreviation, e.g. 'foo'"
-               th:errorclass="is-invalid" th:value="*{abbreviation}" type="text">
+               th:errorclass="is-invalid" th:value="*{abbreviation}" type="text"
+               th:maxlength="${maxAbbreviationLength}">
         <span class="text-danger" th:errors="*{abbreviation}" th:if="${#fields.hasErrors('abbreviation')}"></span>
       </div>
       <input class="btn btn-primary" type="submit" value="Create short link">
