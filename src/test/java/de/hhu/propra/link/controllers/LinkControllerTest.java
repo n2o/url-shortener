@@ -13,6 +13,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest
 class LinkControllerTest {
+
     @Autowired
     MockMvc mvc;
 
@@ -34,5 +35,4 @@ class LinkControllerTest {
                 )
                 .andExpect(status().is3xxRedirection());
     }
-
 }

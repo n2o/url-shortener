@@ -90,27 +90,27 @@ public class LinkController {
     }
 
     @ModelAttribute("maxAbbreviationLength")
-    public int getMaxAbbreviationLength() {
+    int getMaxAbbreviationLength() {
         return Link.MAX_ABBREVIATION_LENGTH;
     }
 
     @ModelAttribute("links")
-    public Iterable<Link> getLinks() {
+    Iterable<Link> getLinks() {
         return linkService.allLinks();
     }
 
     @ModelAttribute("link")
-    public Link getLink() {
+    Link getLink() {
         return currentLink;
     }
 
     @ModelAttribute("error")
-    public String getError() {
+    String getError() {
         return errorMessage;
     }
 
     @ModelAttribute("success")
-    public String getSuccess() {
+    String getSuccess() {
         return successMessage;
     }
 }
