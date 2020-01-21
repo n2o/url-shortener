@@ -8,11 +8,13 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class AbbreviationService {
 
     private static final String WWW_PREFIX = "www.";
+    private static final Set<String> BLACKLIST = Set.of("admin");
 
     /**
      * Creates an abbreviation for the entered URL.
@@ -38,7 +40,9 @@ public class AbbreviationService {
             return Optional.empty();
         }
 
-        return Optional.of(abbreviation.toString());
+        String abbreviationString = StringUtil.slugify(abbreviation.toString());
+
+        return Optional.of(abbreviationString);
     }
 
     /**
@@ -87,5 +91,15 @@ public class AbbreviationService {
             tmpAbbreviation.append(path.charAt(0));
         }
         return tmpAbbreviation;
+    }
+
+    /**
+     * Get the validity of the given abbreviation.
+     *
+     * @param abbreviation the abbreviation candidate
+     * @return true if the abbreviation is invalid, false otherwise
+     */
+    public boolean isReserved(String abbreviation) {
+        return BLACKLIST.contains(abbreviation);
     }
 }

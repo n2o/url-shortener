@@ -42,20 +42,25 @@ public class LinkService {
      */
     public boolean createAbbreviation(Link link) {
         Optional<String> abbreviation = abbreviationService.generateAbbreviation(link.getUrl());
-        abbreviation.map(this::findNextFreeAbbreviation).ifPresent(link::setAbbreviation);
-        return abbreviation.isPresent();
+        return abbreviation
+                .map(this::findNextFreeAbbreviation)
+                .map(abbr -> {
+                    link.setAbbreviation(abbr);
+                    return true;
+                })
+                .orElse(false);
     }
 
     /**
      * Create the abbreviation of the {@link Link#MAX_ABBREVIATION_LENGTH maximum length}, generating a new one if the preferred one already exists.
      *
      * @param abbreviationCandidate current abbreviation candidate
-     * @return the candidate as is or - when necessary - the candidate with appended number for uniqueness
+     * @return the candidate as is or - when necessary - the candidate with an appended number for uniqueness
      */
     String findNextFreeAbbreviation(String abbreviationCandidate) {
         int i = 0;
         String abbreviation = StringUtil.truncate(abbreviationCandidate, Link.MAX_ABBREVIATION_LENGTH);
-        while (linkRepository.findById(abbreviation).isPresent()) {
+        while (abbreviationService.isReserved(abbreviation) || linkRepository.findById(abbreviation).isPresent()) {
             String numberString = String.valueOf(++i);
             abbreviation = StringUtil.truncate(abbreviationCandidate, Link.MAX_ABBREVIATION_LENGTH - numberString.length()) + numberString;
         }

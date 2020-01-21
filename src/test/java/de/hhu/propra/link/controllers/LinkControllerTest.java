@@ -1,5 +1,6 @@
 package de.hhu.propra.link.controllers;
 
+import de.hhu.propra.link.services.AbbreviationService;
 import de.hhu.propra.link.services.LinkService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,9 @@ class LinkControllerTest {
 
     @MockBean
     LinkService linkService;
+
+    @MockBean
+    AbbreviationService abbreviationService;
 
     @Test
     void testIndex() throws Exception {
