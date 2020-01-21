@@ -1,6 +1,7 @@
 package de.hhu.propra.link.entities;
 
 import de.hhu.propra.link.util.StringUtil;
+import de.hhu.propra.link.validation.UnreservedAbbreviation;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.URL;
@@ -17,6 +18,7 @@ public class Link {
 
     @Id
     @Length(max = MAX_ABBREVIATION_LENGTH)
+    @UnreservedAbbreviation
     private String abbreviation;
 
     @URL
