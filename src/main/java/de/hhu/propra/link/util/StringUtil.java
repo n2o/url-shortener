@@ -2,10 +2,24 @@ package de.hhu.propra.link.util;
 
 import com.github.slugify.Slugify;
 
+import java.util.Locale;
+
 public class StringUtil {
 
+    /**
+     * Slugify uses the locale dependent toLowerCase() method.
+     * We overwrite that with the default locale-independent one.
+     */
+    private static final Slugify SLUGIFY = new Slugify().withLowerCase(false);
+
+    /**
+     * 'Slugify' the given string - meaning converting it to a URL-friendly format
+     *
+     * @param string the string to be slugified
+     * @return the slugified string
+     */
     public static String slugify(String string) {
-        return new Slugify().slugify(string);
+        return SLUGIFY.slugify(string).toLowerCase(Locale.ROOT);
     }
 
     /**
