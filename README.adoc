@@ -18,11 +18,7 @@ image::img/shorty.png[shorty]
 
 == Installation
 
-You need a JDK, Gradle and yarn for this project.
-
-Download the external dependencies with
-
-    yarn install
+You need a JDK and Gradle for this project.
 
 As a requirement a Redis-Database is necessary.
 Start one with
