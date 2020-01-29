@@ -1,0 +1,33 @@
+build_image:
+  image: docker:git
+  stage: build
+  services:
+    - docker:dind
+  script:
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY
+    - docker build -t $CI_REGISTRY_IMAGE --pull
+    - docker push $CI_REGISTRY_IMAGE
+
+check:
+  image: gradle:jdk11
+  stage: test
+  script:
+    - gradle check
+
+deploy_production:
+  image: alpine
+  stage: deploy
+  environment: production
+  only:
+    - master
+  tags:
+    - cn
+  before_script:
+    - apk add --no-cache openssh
+    - eval "$(ssh-agent -s)"
+    - mkdir -p ~/.ssh
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+    - chmod 700 ~/.ssh/
+    - ssh-keyscan -H 'docker-int.cn.uni-duesseldorf.de' > ~/.ssh/known_hosts
+  script:
+    - ssh root@docker-int.cn.uni-duesseldorf.de "$DEPLOY_YMLS"
