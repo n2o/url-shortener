@@ -15,16 +15,17 @@
     Create personalized short-links
   </p>
 
-  <div id="error-message" class="alert alert-warning" th:if="${error} != null" th:text="${error}">
+  <div class="alert alert-warning" id="error-message" th:if="${error} != null" th:text="${error}">
     Some error message
   </div>
 
-  <div id="success-message" class="alert alert-success" th:if="${success} != null" th:text="${success}">
+  <div class="alert alert-success" id="success-message" th:if="${success} != null" th:text="${success}">
     Some success message
   </div>
 
   <div id="new-link">
     <form method="post" th:object="${link}">
+      <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden"/>
       <div class="form-group">
         <label for="url">Add the destination URL of your short link</label>
         <input class="form-control" id="url" name="url" placeholder="URL" required
@@ -34,8 +35,8 @@
       <div class="form-group">
         <label for="abbreviation">Please add an (optional) name for your short link</label>
         <input class="form-control" id="abbreviation" name="abbreviation" placeholder="Abbreviation, e.g. 'foo'"
-               th:errorclass="is-invalid" th:value="*{abbreviation}" type="text"
-               th:maxlength="${maxAbbreviationLength}">
+               th:errorclass="is-invalid" th:maxlength="${maxAbbreviationLength}" th:value="*{abbreviation}"
+               type="text">
         <span class="text-danger" th:errors="*{abbreviation}" th:if="${#fields.hasErrors('abbreviation')}"></span>
       </div>
       <input class="btn btn-primary" type="submit" value="Create short link">

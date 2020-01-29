@@ -14,7 +14,7 @@ import java.util.Set;
 public class AbbreviationService {
 
     private static final String WWW_PREFIX = "www.";
-    private static final Set<String> BLACKLIST = Set.of("admin");
+    private static final Set<String> BLACKLIST = Set.of("admin", "login", "logout");
 
     /**
      * Creates an abbreviation for the entered URL.

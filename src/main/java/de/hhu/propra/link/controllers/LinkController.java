@@ -27,10 +27,15 @@ public class LinkController {
 
     @GetMapping("/")
     public String index() {
+        return "redirect:/admin";
+    }
+
+    @GetMapping("/admin")
+    public String admin() {
         return "index";
     }
 
-    @PostMapping("/")
+    @PostMapping("/admin")
     public String newLink(@ModelAttribute @Valid Link link, BindingResult bindingResult) {
         this.currentLink = link;
 
@@ -49,7 +54,7 @@ public class LinkController {
             this.currentLink = new Link();
         }
 
-        return "redirect:/";
+        return "redirect:/admin";
     }
 
     @GetMapping("/{abbreviation}")
@@ -68,7 +73,7 @@ public class LinkController {
         } else {
             setMessages("Short link could not be deleted, because it was not found in the database", null);
         }
-        return "redirect:/";
+        return "redirect:/admin";
     }
 
     /**
