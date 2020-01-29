@@ -5,7 +5,7 @@ build_image:
     - docker:dind
   script:
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY
-    - docker build -t $CI_REGISTRY_IMAGE --pull
+    - docker build -t $CI_REGISTRY_IMAGE --pull .
     - docker push $CI_REGISTRY_IMAGE
 
 check:
