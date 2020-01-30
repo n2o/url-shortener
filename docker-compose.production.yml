@@ -9,3 +9,5 @@ services:
     image: gitlab.cs.uni-duesseldorf.de:5001/cn-tsn/project/shorty:latest
     ports:
       - "5007:8080"
+    env_file:
+      - production.env
