@@ -26,17 +26,15 @@ class LinkControllerTest {
 
     @Test
     void testIndex() throws Exception {
-        mvc.perform(get("/")).andExpect(status().isOk());
+        mvc.perform(get("/")).andExpect(status().is3xxRedirection());
     }
 
     @Test
     void testNewLink() throws Exception {
-        mvc
-                .perform(
-                        post("/")
-                                .param("abbreviation", "abc")
-                                .param("url", "http://www.abc.de")
-                )
-                .andExpect(status().is3xxRedirection());
+        mvc.perform(
+                post("/")
+                        .param("abbreviation", "abc")
+                        .param("url", "http://www.abc.de")
+        ).andExpect(status().is4xxClientError());
     }
 }
