@@ -1,0 +1,13 @@
+{
+  "name": "Shorty: The URL Shortener",
+  "description": "Awesome URL Shortener",
+  "repository": "https://github.com/n2o/url-shortener",
+  "keywords": [
+    "url",
+    "links",
+    "awesome"
+  ],
+  "addons": [
+    "heroku-redis:hobby-dev"
+  ]
+}
