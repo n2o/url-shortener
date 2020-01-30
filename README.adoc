@@ -16,7 +16,12 @@ image::https://www.herokucdn.com/deploy/button.svg[link="https://heroku.com/depl
 This is a URL Shortener written in Java with the only purpose to create shortened urls, which are stored in a Redis-Database.
 The shortened links can then be used to provide a simpler access to complicated URLs.
 
-image::img/shorty.png[shorty]
+image::img/shorty_admin.png[shorty admin panel]
+
+It comes with authentication support. Only admins are allowed to create or delete short links.
+
+image::img/shorty_index.png[shorty index]
+
 
 == Installation
 
