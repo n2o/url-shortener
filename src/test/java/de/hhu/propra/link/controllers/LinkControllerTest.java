@@ -29,7 +29,8 @@ class LinkControllerTest {
     @Test
     void testIndex() throws Exception {
         mvc.perform(get("/"))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(view().name("index"));
     }
 
     @Test
