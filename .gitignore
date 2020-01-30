@@ -33,3 +33,5 @@ out/
 .vscode/
 
 application-prod.properties
+
+db/data/
