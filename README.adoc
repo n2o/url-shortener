@@ -33,8 +33,13 @@ Then start the application:
 
 == Usage
 
-Start the application, add a short link.
-Then you can access it via
+Open the landing page http://localhost:8080. You now need to login as an admin.
+The credentials are defined in the
+link:src/main/resources/application.properties[application.properties].
+
+In the admin menu you can add new short links.
+
+Then you can get redirected by querying the following address:
 http://localhost:8080/<your-short-link>
 
 == Contribution
