@@ -11,6 +11,8 @@ ifdef::env-github[]
 :warning-caption: :warning:
 endif::[]
 
+image::https://www.herokucdn.com/deploy/button.svg[link="https://heroku.com/deploy?template=https://github.com/n2o/url-shortener">"]
+
 This is a URL Shortener written in Java with the only purpose to create shortened urls, which are stored in a Redis-Database.
 The shortened links can then be used to provide a simpler access to complicated URLs.
 
@@ -40,4 +42,4 @@ http://localhost:8080/<your-short-link>
 * Write in English language
 * Add https://github.com/n2o/url-shortener/issues[Issues] and assign yourself to the issue when you want wo work on it
 * Create https://github.com/n2o/url-shortener/pulls[Pull Requests]
-* Read the Code of Conduct
+* Read and follow the Code of Conduct
