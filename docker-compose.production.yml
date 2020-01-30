@@ -5,4 +5,4 @@ services:
   web:
     image: gitlab.cs.uni-duesseldorf.de:5001/cn-tsn/project/shorty:latest
     ports:
-      - "5008:8080"
+      - "5007:8080"
