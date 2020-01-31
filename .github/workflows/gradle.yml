@@ -26,3 +26,11 @@ jobs:
 
       - name: Run Gradle Checks
         run: ./gradlew check
+
+  deploy:
+    run-on: ubuntu-last
+    needs: test
+    if: github.ref == 'refs/heads/master' && github.event == 'push'
+    steps:
+      - name: Deploy to Heroku
+        uses: actions/heroku@1.0.0
