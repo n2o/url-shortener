@@ -18,6 +18,8 @@ The shortened links can then be used to provide a simpler access to complicated 
 
 image::img/shorty.png[shorty]
 
+It comes with authentication support. Only admins are allowed to create or delete short links.
+
 == Installation
 
 You need a JDK and Gradle for this project.

@@ -2,6 +2,7 @@ package de.hhu.propra.link.controllers;
 
 import de.hhu.propra.link.entities.Link;
 import de.hhu.propra.link.services.LinkService;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.context.annotation.SessionScope;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
 import java.util.Optional;
@@ -27,12 +29,12 @@ public class LinkController {
 
     @GetMapping("/")
     public String index() {
-        return "redirect:/admin";
+        return "index";
     }
 
     @GetMapping("/admin")
     public String admin() {
-        return "index";
+        return "admin";
     }
 
     @PostMapping("/admin")
@@ -41,7 +43,7 @@ public class LinkController {
 
         if (bindingResult.hasErrors()) {
             setMessages("The link or abbreviation is invalid. Try another one.", null);
-            return "index";
+            return "admin";
         }
 
         if (link.getAbbreviation().isEmpty() && !linkService.createAbbreviation(link)) {
@@ -61,7 +63,8 @@ public class LinkController {
     public String redirectUrl(@PathVariable String abbreviation) {
         resetMessages();
         Optional<Link> link = linkService.findById(abbreviation);
-        return link.map(value -> "redirect:" + value.getUrl()).orElse("redirect:/");
+        String url = link.map(Link::getUrl).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "short link does not exist"));
+        return "redirect:" + url;
     }
 
     @PostMapping("/{abbreviation}/delete")
