@@ -28,7 +28,7 @@ jobs:
         run: ./gradlew check
 
   deploy:
-    run-on: ubuntu-last
+    runs-on: ubuntu-latest
     needs: test
     if: github.ref == 'refs/heads/master' && github.event == 'push'
     steps:
