@@ -7,7 +7,7 @@ on:
 
 jobs:
   deploy:
-    run-on: ubuntu-last
+    runs-on: ubuntu-lastest
     steps:
       - uses: actions/checkout@v2
       - name: Deploy to Heroku
