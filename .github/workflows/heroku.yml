@@ -10,8 +10,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Deploy to Heroku
-        env:
-          HEROKU_API_TOKEN: ${{ secrets.HEROKU_API_KEY }}
-          HEROKU_APP_NAME: "theshorty"
-        run: git push https://heroku:$HEROKU_API_TOKEN@git.heroku.com/$HEROKU_APP_NAME.git origin/master:master
+      - name: Create remote
+          env:
+            HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+          run: heroku git:remote
+            - name: Push and Build
+              env:
+                HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+              run: git push heroku master
