@@ -11,10 +11,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Create remote
-          env:
-            HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-          run: heroku git:remote
-            - name: Push and Build
-              env:
-                HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-              run: git push heroku master
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        run: heroku git:remote
+          - name: Push and Build
+            env:
+              HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+            run: git push heroku master
