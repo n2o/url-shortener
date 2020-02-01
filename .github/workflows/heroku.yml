@@ -1,0 +1,17 @@
+name: Heroku Deployment
+
+on:
+  push:
+    branches:
+      - auto_deploy_heroku # this is only for the first test run, will be master in production
+
+jobs:
+  deploy:
+    run-on: ubuntu-last
+    needs: test
+    steps:
+      - name: Deploy to Heroku
+      env:
+        HEROKU_API_TOKEN: ${{ secrets.HEROKU_API_KEY }}
+        HEROKU_APP_NAME: "theshorty"
+      run: git push https://heroku:$HEROKU_API_TOKEN@git.heroku.com/$HEROKU_APP_NAME.git origin/master:master
