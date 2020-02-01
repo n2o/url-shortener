@@ -10,6 +10,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - run: |+
+          cat >~/.netrc <<EOF
+          machine api.heroku.com
+              login $HEROKU_EMAIL
+              password $HEROKU_API_KEY
+          machine git.heroku.com
+              login $HEROKU_EMAIL
+              password $HEROKU_API_KEY
+          EOF
       - name: Create remote
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
@@ -17,4 +26,5 @@ jobs:
       - name: Push and Build
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+
         run: git push heroku HEAD:refs/heads/master
