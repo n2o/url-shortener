@@ -12,13 +12,15 @@ ifdef::env-github[]
 endif::[]
 
 image::https://www.herokucdn.com/deploy/button.svg[link="https://heroku.com/deploy?template=https://github.com/n2o/url-shortener">"]
+image:https://img.shields.io/docker/pulls/cmeter/url-shortener[Docker Pulls]
 
 This is a URL Shortener written in Java with the only purpose to create shortened urls, which are stored in a Redis-Database.
 The shortened links can then be used to provide a simpler access to complicated URLs.
 
 image::img/shorty.png[shorty]
 
-It comes with authentication support. Only admins are allowed to create or delete short links.
+It comes with authentication support.
+Only admins are allowed to create or delete short links.
 
 == Installation
 
@@ -43,6 +45,19 @@ In the admin menu you can add new short links.
 
 Then you can get redirected by querying the following address:
 http://localhost:8080/<your-short-link>
+
+== Docker
+
+We automatically build a docker image for shorty.
+Find it here:
+https://hub.docker.com/repository/docker/cmeter/url-shortener
+
+== Deployment
+
+There is a `docker-compose.yml` file to create a production build.
+Please copy and edit `skeleton.env` to your needs and save it as `production.env`
+
+The application then starts a redis server, which persists the data and exposes port 5007 for further access.
 
 == Contribution
 
