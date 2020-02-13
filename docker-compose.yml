@@ -2,5 +2,12 @@ version: "3.7"
 services:
   redis:
     image: redis:alpine
+    command: redis-server --appendonly yes
+    volumes:
+      - ./db/data:/data
+  web:
+    image: cmeter/url-shortener
     ports:
-      - "6379:6379"
+      - "5007:8080"
+    env_file:
+      - production.env
