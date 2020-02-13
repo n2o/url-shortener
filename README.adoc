@@ -12,7 +12,7 @@ ifdef::env-github[]
 endif::[]
 
 image::https://www.herokucdn.com/deploy/button.svg[link="https://heroku.com/deploy?template=https://github.com/n2o/url-shortener">"]
-image:https://img.shields.io/docker/pulls/cmeter/url-shortener[Docker Pulls]
+image::https://img.shields.io/docker/pulls/cmeter/url-shortener[link="https://img.shields.io/docker/pulls/cmeter/url-shortener"]
 
 This is a URL Shortener written in Java with the only purpose to create shortened urls, which are stored in a Redis-Database.
 The shortened links can then be used to provide a simpler access to complicated URLs.
