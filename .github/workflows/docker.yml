@@ -1,4 +1,4 @@
-name: Publish Docker
+name: Publish Docker and Deploy App
 
 on:
   push:
@@ -19,7 +19,7 @@ jobs:
       - name: Trigger Gitlab CI/CD
         uses: wei/curl@master
         with:
-          args: "-X POST --header \"PRIVATE-TOKEN: ${{ secrets.GITLAB_PULL_TOKEN }}\" https://gitlab.cs.uni-duesseldorf.de/api/v4/projects/1581/mirror/pull"
+          args: "-X POST --header 'PRIVATE-TOKEN: ${{ secrets.GITLAB_PULL_TOKEN }}' https://gitlab.cs.uni-duesseldorf.de/api/v4/projects/1581/mirror/pull"
       - name: Trigger Gitlab CI/CD
         uses: wei/curl@master
         with:
