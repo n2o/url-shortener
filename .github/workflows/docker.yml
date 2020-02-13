@@ -17,8 +17,8 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
       - name: Trigger Gitlab CI Build
-          uses: appleboy/gitlab-ci-action@master
-          with:
-            url: "https://gitlab.cs.uni-duesseldorf.de"
-            token: ${{ secrets.GITLAB_TOKEN }}
-            project_id: 1581
+        uses: appleboy/gitlab-ci-action@master
+        with:
+          url: "https://gitlab.cs.uni-duesseldorf.de"
+          token: ${{ secrets.GITLAB_TOKEN }}
+          project_id: 1581
