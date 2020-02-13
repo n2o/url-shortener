@@ -2,8 +2,8 @@ name: Publish Docker
 
 on:
   push:
-    paths:
-      - 'publish/docker-image'
+    branches:
+      - 'publish/**'
 
 jobs:
   build:
