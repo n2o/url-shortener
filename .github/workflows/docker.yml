@@ -10,13 +10,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
-      #      - name: Publish to Registry
-      #        uses: elgohr/Publish-Docker-Github-Action@master
-      #        with:
-      #          name: cmeter/url-shortener
-      #          username: ${{ secrets.DOCKER_USERNAME }}
-      #          password: ${{ secrets.DOCKER_PASSWORD }}
-      - name: Trigger Gitlab CI/CD
+      - name: Publish to Registry
+        uses: elgohr/Publish-Docker-Github-Action@master
+        with:
+          name: cmeter/url-shortener
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Trigger Gitlab to pull changes
         uses: wei/curl@master
         with:
           args: -X POST --header '${{ secrets.GITLAB_PULL_HEADER }}' https://gitlab.cs.uni-duesseldorf.de/api/v4/projects/1581/mirror/pull
