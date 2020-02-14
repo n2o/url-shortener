@@ -20,6 +20,10 @@ jobs:
         uses: wei/curl@master
         with:
           args: -X POST --header '${{ secrets.GITLAB_PULL_HEADER }}' https://gitlab.cs.uni-duesseldorf.de/api/v4/projects/1581/mirror/pull
+      - name: Wait so that GitLab can pull latest changes before triggering the CI/CD process
+        uses: jakejarvis/wait-action@master
+        with:
+          time: '10s'
       - name: Trigger Gitlab CI/CD
         uses: wei/curl@master
         with:
