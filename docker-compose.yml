@@ -8,6 +8,6 @@ services:
   web:
     image: cmeter/url-shortener
     ports:
-      - "5007:8080"
+      - "8080:8080"
     env_file:
       - production.env

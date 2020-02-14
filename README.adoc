@@ -57,7 +57,7 @@ https://hub.docker.com/repository/docker/cmeter/url-shortener
 There is a `docker-compose.yml` file to create a production build.
 Please copy and edit `skeleton.env` to your needs and save it as `production.env`
 
-The application then starts a redis server, which persists the data and exposes port 5007 for further access.
+The application then starts a redis server, which persists the data and exposes port 8080 for further access.
 
 == Contribution
 
