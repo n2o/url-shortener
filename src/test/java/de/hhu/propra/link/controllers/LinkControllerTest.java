@@ -30,49 +30,32 @@ class LinkControllerTest {
     void testIndex() throws Exception {
         mvc.perform(get("/"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("index"));
-    }
-
-    @Test
-    void testAdminAnonymous() throws Exception {
-        mvc.perform(get("/admin"))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrlPattern("**/login"));
+                .andExpect(view().name("main"));
     }
 
     @Test
     @WithMockUser(roles = "ADMIN")
     void testAdminAuthorized() throws Exception {
-        mvc.perform(get("/admin"))
+        mvc.perform(get("/"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("admin"));
+                .andExpect(view().name("main"));
     }
 
     @Test
     void testNewLinkAnonymousWithoutCsrf() throws Exception {
         mvc.perform(
-                post("/admin")
+                post("/")
                         .param("abbreviation", "abc")
                         .param("url", "http://www.abc.de")
         ).andExpect(status().is4xxClientError());
     }
 
-    @Test
-    void testNewLinkAnonymousWithCsrf() throws Exception {
-        mvc.perform(
-                post("/admin")
-                        .param("abbreviation", "abc")
-                        .param("url", "http://www.abc.de")
-                        .with(csrf())
-        ).andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrlPattern("**/login"));
-    }
 
     @Test
     @WithMockUser(roles = "ADMIN")
     void testNewLinkAuthorizedWithoutCsrf() throws Exception {
         mvc.perform(
-                post("/admin")
+                post("/")
                         .param("abbreviation", "abc")
                         .param("url", "http://www.abc.de")
         ).andExpect(status().is4xxClientError());
@@ -82,11 +65,11 @@ class LinkControllerTest {
     @WithMockUser(roles = "ADMIN")
     void testNewLinkAuthorizedWithCsrf() throws Exception {
         mvc.perform(
-                post("/admin")
+                post("/")
                         .param("abbreviation", "abc")
                         .param("url", "http://www.abc.de")
                         .with(csrf())
         ).andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/admin"));
+                .andExpect(redirectedUrl("/"));
     }
 }

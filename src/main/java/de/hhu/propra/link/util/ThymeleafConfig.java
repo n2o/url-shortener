@@ -1,4 +1,4 @@
-package de.hhu.propra.link;
+package de.hhu.propra.link.util;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

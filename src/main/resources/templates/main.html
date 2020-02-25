@@ -36,11 +36,11 @@
     </div>
 
     <div sec:authorize="hasRole('ADMIN')" id="new-link">
-        <form method="post" th:action="@{/admin}"
+        <form method="post" th:action="@{/}"
               th:object="${link}">
             <div class="form-group">
                 <label for="url">Add the destination URL of your short link</label>
-                <input class="form-control" id="url" name="url" placeholder="URL" required
+                <input class="form-control" id="url" name="url" placeholder="URL, e.g. 'https://google.de'" required
                        th:errorclass="is-invalid" th:value="*{url}" type="url">
                 <span class="text-danger" th:errors="*{url}" th:if="${#fields.hasErrors('url')}"></span>
             </div>
