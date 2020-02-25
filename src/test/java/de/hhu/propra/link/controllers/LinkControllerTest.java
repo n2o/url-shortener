@@ -27,7 +27,7 @@ class LinkControllerTest {
     AbbreviationService abbreviationService;
 
     @Test
-    void testIndex() throws Exception {
+    void testMain() throws Exception {
         mvc.perform(get("/"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("main"));
@@ -71,5 +71,12 @@ class LinkControllerTest {
                         .with(csrf())
         ).andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/"));
+    }
+
+    @Test
+    void testlogin() throws Exception {
+        mvc.perform(get("/login"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("main"));
     }
 }

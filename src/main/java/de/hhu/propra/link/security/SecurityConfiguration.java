@@ -12,6 +12,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/*/delete").hasRole("ADMIN")
                 .antMatchers("/admin").hasRole("ADMIN");
         http.formLogin()
+                .loginPage("/login")
                 .permitAll();
         http.logout()
                 .permitAll();

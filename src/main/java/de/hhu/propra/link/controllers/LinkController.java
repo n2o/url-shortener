@@ -32,10 +32,10 @@ public class LinkController {
         return "main";
     }
 
-//    @GetMapping("/admin")
-//    public String admin() {
-//        return "admin";
-//    }
+    @GetMapping("/login")
+    public String loginPage() {
+        return "main";
+    }
 
     @PostMapping("/")
     public String newLink(@ModelAttribute @Valid Link link, BindingResult bindingResult) {

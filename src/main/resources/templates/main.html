@@ -25,8 +25,26 @@
 
     <div sec:authorize="isAnonymous()">
         <form th:action="@{/login}" method="post">
-            <input class="btn btn-primary" type="submit" value="Login"/>
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" class="form-control"/>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" id="password" name="password"/>
+            </div>
+            <input type="hidden"
+                   name="${_csrf.parameterName}"
+                   value="${_csrf.token}"/>
+            <input class="btn btn-primary" type="submit" value="Log in"/>
         </form>
+    </div>
+
+    <div class="alert alert-warning" th:if="${param.error}">
+        Wrong Username or Password!
+    </div>
+    <div class="alert alert-success" th:if="${param.logout}">
+        Logout successful!
     </div>
 
     <div sec:authorize="isAuthenticated()">
@@ -34,6 +52,7 @@
             <input class="btn btn-primary" type="submit" value="Logout"/>
         </form>
     </div>
+
 
     <div sec:authorize="hasRole('ADMIN')" id="new-link">
         <form method="post" th:action="@{/}"
