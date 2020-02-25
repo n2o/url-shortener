@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Shorty</title>
@@ -23,15 +23,21 @@
         Some success message
     </div>
 
-    <div>
+    <div sec:authorize="isAnonymous()">
+        <form th:action="@{/login}" method="post">
+            <input class="btn btn-primary" type="submit" value="Login"/>
+        </form>
+    </div>
+
+    <div sec:authorize="isAuthenticated()">
         <form th:action="@{/logout}" method="post">
             <input class="btn btn-primary" type="submit" value="Logout"/>
         </form>
     </div>
 
-
-    <div id="new-link">
-        <form method="post" th:action="@{/admin}" th:object="${link}">
+    <div sec:authorize="hasRole('ADMIN')" id="new-link">
+        <form method="post" th:action="@{/admin}"
+              th:object="${link}">
             <div class="form-group">
                 <label for="url">Add the destination URL of your short link</label>
                 <input class="form-control" id="url" name="url" placeholder="URL" required
@@ -73,7 +79,7 @@
             https://hhu.de
           </span>
                 </td>
-                <td>
+                <td sec:authorize="isAuthenticated()">
                     <form method="post" th:action="@{/{abbreviation}/delete(abbreviation=*{abbreviation})}">
                         <input class="btn btn-outline-dark btn-sm" type="submit" value="Delete">
                     </form>

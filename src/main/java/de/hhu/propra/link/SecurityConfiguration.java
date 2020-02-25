@@ -11,8 +11,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/*/delete").hasRole("ADMIN")
                 .antMatchers("/admin").hasRole("ADMIN");
-        http.formLogin().permitAll();
-        http.logout().permitAll();
+        http.formLogin()
+                .permitAll();
+        http.logout()
+                .permitAll();
     }
 }
 

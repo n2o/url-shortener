@@ -29,7 +29,7 @@ public class LinkController {
 
     @GetMapping("/")
     public String index() {
-        return "index";
+        return "admin";
     }
 
     @GetMapping("/admin")
