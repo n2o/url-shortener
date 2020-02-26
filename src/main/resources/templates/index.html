@@ -23,6 +23,10 @@
     Some success message
   </div>
 
+  <div sec:authorize="isAnonymous()" class="alert alert-info" role="alert">
+    To access the admin panel, you must first login.
+  </div>
+
   <div sec:authorize="isAnonymous()">
     <form th:action="@{/login}" method="post">
       <div class="form-group">
