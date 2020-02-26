@@ -112,7 +112,7 @@ class LinkControllerTest {
     void testLogoutWithCsrf() throws Exception {
         mvc.perform(post("/logout").with(csrf()))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/"));
+                .andExpect(redirectedUrlPattern("/login?logout"));
     }
 
     @Test
