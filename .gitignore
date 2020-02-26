@@ -33,4 +33,4 @@ out/
 .vscode/
 
 db/data/
-production.env
+skeleton.env

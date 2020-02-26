@@ -29,12 +29,12 @@ public class LinkController {
 
     @GetMapping("/")
     public String index() {
-        return "main";
+        return "index";
     }
 
     @GetMapping("/login")
     public String loginPage() {
-        return "main";
+        return "index";
     }
 
     @PostMapping("/")
@@ -43,7 +43,7 @@ public class LinkController {
 
         if (bindingResult.hasErrors()) {
             setMessages("The link or abbreviation is invalid. Try another one.", null);
-            return "main";
+            return "index";
         }
 
         if (link.getAbbreviation().isEmpty() && !linkService.createAbbreviation(link)) {
