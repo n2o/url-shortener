@@ -74,9 +74,51 @@ class LinkControllerTest {
     }
 
     @Test
-    void testlogin() throws Exception {
+    void testLoginPage() throws Exception {
         mvc.perform(get("/login"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("index"));
     }
+
+    @Test
+    void testValidLogin() throws Exception {
+        mvc.perform(post("/login")
+                .param("username", "admin")
+                .param("password", "1234")
+                .with(csrf()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/"));
+    }
+
+    @Test
+    void testInvalidLogin() throws Exception {
+        mvc.perform(post("/login")
+                .param("username", "admin")
+                .param("password", "")
+                .with(csrf()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrlPattern("/login?error"));
+    }
+
+    @Test
+    void testLoginwithoutCsrf() throws Exception {
+        mvc.perform(post("/login")
+                .with(csrf().useInvalidToken()))
+                .andExpect(status().is(403));
+    }
+
+
+    @Test
+    void testLogoutWithCsrf() throws Exception {
+        mvc.perform(post("/logout").with(csrf()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/"));
+    }
+
+    @Test
+    void testLogoutWithoutCsrf() throws Exception {
+        mvc.perform(post("/logout").with(csrf().useInvalidToken()))
+                .andExpect(status().is(403));
+    }
+
 }
