@@ -27,10 +27,10 @@ class LinkControllerTest {
     AbbreviationService abbreviationService;
 
     @Test
-    void testMain() throws Exception {
+    void testIndex() throws Exception {
         mvc.perform(get("/"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("main"));
+                .andExpect(view().name("index"));
     }
 
     @Test
@@ -38,7 +38,7 @@ class LinkControllerTest {
     void testAdminAuthorized() throws Exception {
         mvc.perform(get("/"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("main"));
+                .andExpect(view().name("index"));
     }
 
     @Test
@@ -77,6 +77,6 @@ class LinkControllerTest {
     void testlogin() throws Exception {
         mvc.perform(get("/login"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("main"));
+                .andExpect(view().name("index"));
     }
 }
