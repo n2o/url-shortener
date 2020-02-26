@@ -1,0 +1,12 @@
+root = true
+
+[*.{html, java}]
+charset = utf-8
+
+[*.java]
+indent_style = space
+indent_size = 4
+
+[*.html]
+indent_style = space
+indent_size = 2
