@@ -32,18 +32,18 @@ public class LinkController {
         return "index";
     }
 
-    @GetMapping("/admin")
-    public String admin() {
-        return "admin";
+    @GetMapping("/login")
+    public String loginPage() {
+        return "index";
     }
 
-    @PostMapping("/admin")
+    @PostMapping("/")
     public String newLink(@ModelAttribute @Valid Link link, BindingResult bindingResult) {
         this.currentLink = link;
 
         if (bindingResult.hasErrors()) {
             setMessages("The link or abbreviation is invalid. Try another one.", null);
-            return "admin";
+            return "index";
         }
 
         if (link.getAbbreviation().isEmpty() && !linkService.createAbbreviation(link)) {
@@ -56,7 +56,7 @@ public class LinkController {
             this.currentLink = new Link();
         }
 
-        return "redirect:/admin";
+        return "redirect:/";
     }
 
     @GetMapping("/{abbreviation}")
@@ -76,7 +76,7 @@ public class LinkController {
         } else {
             setMessages("Short link could not be deleted, because it was not found in the database", null);
         }
-        return "redirect:/admin";
+        return "redirect:/";
     }
 
     /**

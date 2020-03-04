@@ -1,4 +1,4 @@
-package de.hhu.propra.link;
+package de.hhu.propra.link.security;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -11,8 +11,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/*/delete").hasRole("ADMIN")
                 .antMatchers("/admin").hasRole("ADMIN");
-        http.formLogin().permitAll();
-        http.logout().permitAll();
+        http.formLogin()
+                .loginPage("/login")
+                .permitAll();
+        http.logout()
+                .permitAll();
     }
 }
 
