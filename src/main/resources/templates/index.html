@@ -7,6 +7,22 @@
         th:href="@{node_modules/bootstrap/dist/css/bootstrap.min.css}">
 </head>
 <body>
+
+<nav class="navbar navbar-light bg-light justify-content-between">
+  <div>
+    <a class="navbar-brand" href="/">Shorty</a>
+    <span>
+      personalized short-links
+    </span>
+  </div>
+
+  <div sec:authorize="isAuthenticated()">
+    <form th:action="@{/logout}" method="post">
+      <input class="btn btn-outline-secondary" type="submit" value="Logout"/>
+    </form>
+  </div>
+</nav>
+
 <div class="container pt-3">
   <h1 class="text-center">
     Shorty: URL Shortener
@@ -37,21 +53,17 @@
         <label for="password">Password</label>
         <input type="password" class="form-control" id="password" name="password"/>
       </div>
-      <input class="btn btn-primary" type="submit" value="Log in"/>
+      <input class="btn btn-primary" type="submit" value="Login"/>
     </form>
   </div>
+
+  <br>
 
   <div class="alert alert-warning" th:if="${param.error}">
     Wrong Username or Password!
   </div>
   <div class="alert alert-success" th:if="${param.logout}">
     Logout successful!
-  </div>
-
-  <div sec:authorize="isAuthenticated()">
-    <form th:action="@{/logout}" method="post">
-      <input class="btn btn-primary" type="submit" value="Logout"/>
-    </form>
   </div>
 
 
@@ -65,7 +77,7 @@
         <span class="text-danger" th:errors="*{url}" th:if="${#fields.hasErrors('url')}"></span>
       </div>
       <div class="form-group">
-        <label for="abbreviation">Please add an (optional) name for your short link</label>
+        <label for="abbreviation">Add a name for your short link (optional)</label>
         <input class="form-control" id="abbreviation" name="abbreviation" placeholder="Abbreviation, e.g. 'foo'"
                th:errorclass="is-invalid" th:maxlength="${maxAbbreviationLength}" th:value="*{abbreviation}"
                type="text">
