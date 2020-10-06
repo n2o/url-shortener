@@ -7,6 +7,13 @@
         th:href="@{node_modules/bootstrap/dist/css/bootstrap.min.css}">
 </head>
 <body>
+
+<div sec:authorize="isAuthenticated()" class="nav justify-content-end m-3">
+  <form th:action="@{/logout}" method="post">
+    <input class="btn btn-outline-secondary" type="submit" value="Logout"/>
+  </form>
+</div>
+
 <div class="container pt-3">
   <h1 class="text-center">
     Shorty: URL Shortener
@@ -47,13 +54,6 @@
   <div class="alert alert-success" th:if="${param.logout}">
     Logout successful!
   </div>
-
-  <div sec:authorize="isAuthenticated()">
-    <form th:action="@{/logout}" method="post">
-      <input class="btn btn-primary" type="submit" value="Logout"/>
-    </form>
-  </div>
-
 
   <div sec:authorize="hasRole('ADMIN')" id="new-link">
     <form method="post" th:action="@{/}"
