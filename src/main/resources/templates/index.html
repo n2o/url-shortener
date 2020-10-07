@@ -8,12 +8,29 @@
 </head>
 <body>
 <div class="container pt-3">
-  <h1 class="text-center">
-    Shorty: URL Shortener
-  </h1>
-  <p class="lead text-center">
-    Create personalized short-links
-  </p>
+
+  <div class="row">
+
+    <div class="col-2"></div>
+
+    <div class="col-8">
+      <h1 class="text-center">
+        Shorty: URL Shortener
+      </h1>
+      <p class="lead text-center">
+        Create personalized short-links
+      </p>
+    </div>
+
+    <div class="col-2">
+      <div sec:authorize="isAuthenticated()" class="align-top float-right">
+        <form th:action="@{/logout}" method="post">
+          <input class="btn btn-primary" type="submit" value="Logout"/>
+        </form>
+      </div>
+    </div>
+
+  </div>
 
   <div class="alert alert-warning" id="error-message" th:if="${error} != null" th:text="${error}">
     Some error message
@@ -47,13 +64,6 @@
   <div class="alert alert-success" th:if="${param.logout}">
     Logout successful!
   </div>
-
-  <div sec:authorize="isAuthenticated()">
-    <form th:action="@{/logout}" method="post">
-      <input class="btn btn-primary" type="submit" value="Logout"/>
-    </form>
-  </div>
-
 
   <div sec:authorize="hasRole('ADMIN')" id="new-link">
     <form method="post" th:action="@{/}"
