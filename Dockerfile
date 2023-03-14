@@ -1,4 +1,4 @@
-FROM gradle:jdk11 AS BUILD
+FROM gradle:7-jdk11 AS BUILD
 WORKDIR /home/gradle/src
 COPY . .
 RUN gradle bootJar
