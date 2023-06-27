@@ -37,6 +37,7 @@ dependencies {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
     testImplementation 'org.springframework.security:spring-security-test'
+    testImplementation group: 'com.tngtech.archunit', name: 'archunit-junit5', version: '1.0.1'
 
     implementation 'com.github.slugify:slugify:2.4'
 }
