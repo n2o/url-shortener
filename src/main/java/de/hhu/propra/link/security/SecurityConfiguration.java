@@ -14,7 +14,8 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests((auth) -> auth
             .requestMatchers("/*/delete").hasRole("ADMIN")
-            .requestMatchers("/admin").hasRole("ADMIN"));
+            .requestMatchers("/admin").hasRole("ADMIN")
+            .anyRequest().authenticated());
         http.formLogin((form) -> form.loginPage("/login").permitAll());
         http.logout(LogoutConfigurer::permitAll);
         return http.build();
