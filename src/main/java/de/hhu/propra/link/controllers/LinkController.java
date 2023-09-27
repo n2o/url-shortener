@@ -2,6 +2,7 @@ package de.hhu.propra.link.controllers;
 
 import de.hhu.propra.link.entities.Link;
 import de.hhu.propra.link.services.LinkService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -12,7 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.context.annotation.SessionScope;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.validation.Valid;
 import java.util.Optional;
 
 @Controller
