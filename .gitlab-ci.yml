@@ -9,10 +9,10 @@ build_image:
     - docker push $CI_REGISTRY_IMAGE
 
 check:
-  image: gradle:8-jdk25-corretto
+  image: amazoncorretto:25-alpine
   stage: test
   script:
-    - gradle check
+    - ./gradlew check
 
 deploy_production:
   image: alpine
