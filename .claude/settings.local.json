@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "WebFetch(domain:github.com)",
+      "Bash(./gradlew:*)",
+      "Bash(java:*)",
+      "Bash(asdf:*)",
+      "Bash(curl:*)",
+      "WebFetch(domain:docs.enterprise.spring.io)",
+      "WebFetch(domain:deepwiki.com)",
+      "Bash(jar tf:*)",
+      "Bash(javap:*)",
+      "Bash(jar:*)"
+    ]
+  }
+}

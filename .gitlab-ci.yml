@@ -9,7 +9,7 @@ build_image:
     - docker push $CI_REGISTRY_IMAGE
 
 check:
-  image: gradle:7-jdk11
+  image: gradle:8-jdk25-corretto
   stage: test
   script:
     - gradle check

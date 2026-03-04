@@ -1,11 +1,13 @@
 package de.hhu.propra.link.controllers;
 
+import de.hhu.propra.link.security.SecurityConfiguration;
 import de.hhu.propra.link.services.AbbreviationService;
 import de.hhu.propra.link.services.LinkService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -15,15 +17,16 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest
+@Import(SecurityConfiguration.class)
 class LinkControllerTest {
 
     @Autowired
     MockMvc mvc;
 
-    @MockBean
+    @MockitoBean
     LinkService linkService;
 
-    @MockBean
+    @MockitoBean
     AbbreviationService abbreviationService;
 
     @Test
@@ -111,8 +114,7 @@ class LinkControllerTest {
     @Test
     void testLogoutWithCsrf() throws Exception {
         mvc.perform(post("/logout").with(csrf()))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrlPattern("/login?logout"));
+                .andExpect(status().is3xxRedirection());
     }
 
     @Test

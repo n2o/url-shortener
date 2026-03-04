@@ -10,7 +10,7 @@ public class StringUtil {
      * Slugify uses the locale dependent toLowerCase() method.
      * We overwrite that with the default locale-independent one.
      */
-    private static final Slugify SLUGIFY = new Slugify().withLowerCase(false);
+    private static final Slugify SLUGIFY = Slugify.builder().lowerCase(false).build();
 
     /**
      * 'Slugify' the given string - meaning converting it to a URL-friendly format

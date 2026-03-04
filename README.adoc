@@ -24,7 +24,7 @@ Only admins are allowed to create or delete short links.
 
 == Installation
 
-You need a JDK and Gradle for this project.
+You need JDK 25+ and Gradle 8.14+ for this project.
 
 As a requirement a Redis-Database is necessary.
 Start one with
@@ -33,7 +33,7 @@ Start one with
 
 Then start the application:
 
-    gradle bootRun
+    ./gradlew bootRun
 
 == Usage
 

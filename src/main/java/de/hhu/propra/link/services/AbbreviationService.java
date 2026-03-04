@@ -4,6 +4,7 @@ import de.hhu.propra.link.util.StringUtil;
 import org.springframework.stereotype.Service;
 
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Locale;
@@ -27,8 +28,8 @@ public class AbbreviationService {
 
         URL url;
         try {
-            url = new URL(urlString);
-        } catch (MalformedURLException ignored) {
+            url = URI.create(urlString).toURL();
+        } catch (MalformedURLException | IllegalArgumentException ignored) {
             return Optional.empty();
         }
 
