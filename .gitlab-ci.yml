@@ -19,7 +19,7 @@ deploy_production:
   stage: deploy
   environment: production
   only:
-    - master
+    - main
   tags:
     - cn
   before_script:
@@ -28,6 +28,6 @@ deploy_production:
     - mkdir -p ~/.ssh
     - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
     - chmod 700 ~/.ssh/
-    - echo "$SSH_KNOWN_HOSTS" >> ~/.ssh/known_hosts 
+    - echo "$SSH_KNOWN_HOSTS" >> ~/.ssh/known_hosts
   script:
     - ssh root@discovery.cs.hhu.de
