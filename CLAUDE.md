@@ -27,7 +27,7 @@
 | `SHORTY_DB_HOST` | `localhost` | Redis host |
 | `SHORTY_DB_PORT` | `6379` | Redis port |
 | `SHORTY_ADMIN` | `admin` | Admin username |
-| `SHORTY_ADMIN_PASSWORD` | `1234` | Admin password |
+| `SHORTY_ADMIN_PASSWORD` | _(required)_ | Admin password — no default; app refuses to start if unset. Stored hashed (BCrypt). |
 
 ## Architecture
 
