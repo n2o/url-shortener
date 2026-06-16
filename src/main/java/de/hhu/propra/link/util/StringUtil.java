@@ -12,6 +12,10 @@ public class StringUtil {
      */
     private static final Slugify SLUGIFY = Slugify.builder().lowerCase(false).build();
 
+    private StringUtil() {
+        // Utility class: prevent instantiation.
+    }
+
     /**
      * 'Slugify' the given string - meaning converting it to a URL-friendly format
      *

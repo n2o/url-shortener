@@ -37,7 +37,7 @@ public class AbbreviationService {
         String[] path = getSplitPath(url);
 
         StringBuilder abbreviation = makeAbbreviation(host, path);
-        if (abbreviation.length() == 0) {
+        if (abbreviation.isEmpty()) {
             return Optional.empty();
         }
 
