@@ -58,7 +58,7 @@ public class LayeredArchitectureTests {
                 .that()
                 .resideInAPackage("de.hhu.propra.link.services")
                 .should(
-                    not(dependOnClassesThat(resideInAPackage("de.hhu.propra.link.controller"))))
+                    not(dependOnClassesThat(resideInAPackage("de.hhu.propra.link.controllers"))))
                 .andShould(
                     onlyBeAccessedByClassesThat(
                         resideInAPackage("de.hhu.propra.link.services")
