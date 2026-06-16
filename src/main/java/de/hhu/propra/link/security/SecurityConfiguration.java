@@ -22,7 +22,6 @@ public class SecurityConfiguration {
         http.authorizeHttpRequests(auth -> auth
                 .requestMatchers(HttpMethod.POST, "/").hasRole("ADMIN")
                 .requestMatchers("/*/delete").hasRole("ADMIN")
-                .requestMatchers("/admin").hasRole("ADMIN")
                 .anyRequest().permitAll()
         );
         http.formLogin(form -> form

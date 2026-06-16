@@ -56,12 +56,11 @@ src/main/java/de/hhu/propra/link/
 
 ## Key Endpoints
 
-- `GET /` — Index page (create short links)
-- `POST /` — Create new short link
+- `GET /` — Index page; doubles as the admin panel (create/list links) when logged in as ADMIN
+- `POST /` — Create new short link (ADMIN only)
 - `GET /{abbreviation}` — Redirect to original URL
 - `POST /{abbreviation}/delete` — Delete link (ADMIN only)
 - `GET /login` — Login page
-- `GET /admin` — Admin page (ADMIN only)
 
 ## Docker
 
