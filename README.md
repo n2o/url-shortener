@@ -39,6 +39,13 @@ In the admin menu you can add new short links. Redirect to the original URL by v
 http://localhost:8080/<your-short-link>
 ```
 
+> [!IMPORTANT]
+> **Open redirect by design.** A URL shortener forwards visitors to whatever destination an
+> admin stored, so any short link is an open redirect to an arbitrary site. Destinations are
+> constrained to the `http`/`https` schemes — `javascript:`, `data:`, `file:` and the like are
+> rejected both when a link is created and again before each redirect — but the target host
+> itself is not restricted. Only trusted admins can create links.
+
 ## Docker
 
 We automatically build a Docker image for Shorty.

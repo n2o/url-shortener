@@ -1,10 +1,10 @@
 package de.hhu.propra.link.entities;
 
 import de.hhu.propra.link.util.StringUtil;
+import de.hhu.propra.link.validation.HttpUrl;
 import de.hhu.propra.link.validation.UnreservedAbbreviation;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.URL;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
 
@@ -21,7 +21,7 @@ public class Link {
     @UnreservedAbbreviation
     private String abbreviation;
 
-    @URL
+    @HttpUrl
     @NotEmpty
     private String url;
 

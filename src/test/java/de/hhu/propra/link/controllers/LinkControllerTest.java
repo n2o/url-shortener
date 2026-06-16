@@ -1,5 +1,6 @@
 package de.hhu.propra.link.controllers;
 
+import de.hhu.propra.link.entities.Link;
 import de.hhu.propra.link.security.SecurityConfiguration;
 import de.hhu.propra.link.services.AbbreviationService;
 import de.hhu.propra.link.services.LinkService;
@@ -12,6 +13,12 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.Optional;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -154,6 +161,55 @@ class LinkControllerTest {
     void testLogoutWithoutCsrf() throws Exception {
         mvc.perform(post("/logout").with(csrf().useInvalidToken()))
                 .andExpect(status().is(403));
+    }
+
+    @Test
+    void testRedirectToExistingLink() throws Exception {
+        when(linkService.findById("abc")).thenReturn(Optional.of(link("abc", "https://example.com")));
+
+        mvc.perform(get("/abc"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("https://example.com"));
+    }
+
+    @Test
+    void testRedirectUnknownLinkReturnsNotFound() throws Exception {
+        when(linkService.findById("missing")).thenReturn(Optional.empty());
+
+        mvc.perform(get("/missing"))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void testRedirectRejectsStoredNonHttpUrl() throws Exception {
+        // Defense in depth: a stored link whose URL is not http/https (e.g. tampered in Redis)
+        // must never produce a javascript:/data:/file: redirect.
+        when(linkService.findById("evil")).thenReturn(Optional.of(link("evil", "javascript:alert(1)")));
+
+        mvc.perform(get("/evil"))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    void testNewLinkRejectsNonHttpScheme() throws Exception {
+        mvc.perform(
+                post("/")
+                        .param("abbreviation", "abc")
+                        .param("url", "javascript:alert(1)")
+                        .with(csrf())
+        ).andExpect(status().isOk())
+                .andExpect(view().name("index"))
+                .andExpect(model().attributeExists("error"));
+
+        verify(linkService, never()).save(any());
+    }
+
+    private static Link link(String abbreviation, String url) {
+        Link link = new Link();
+        link.setAbbreviation(abbreviation);
+        link.setUrl(url);
+        return link;
     }
 
 }

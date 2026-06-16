@@ -2,6 +2,7 @@ package de.hhu.propra.link.controllers;
 
 import de.hhu.propra.link.entities.Link;
 import de.hhu.propra.link.services.LinkService;
+import de.hhu.propra.link.util.UrlUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -64,8 +65,9 @@ public class LinkController {
 
     @GetMapping("/{abbreviation}")
     public String redirectUrl(@PathVariable String abbreviation) {
-        Optional<Link> link = linkService.findById(abbreviation);
-        String url = link.map(Link::getUrl)
+        String url = linkService.findById(abbreviation)
+                .map(Link::getUrl)
+                .filter(UrlUtil::isHttpUrl)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "short link does not exist"));
         return "redirect:" + url;
     }
