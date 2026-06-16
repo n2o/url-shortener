@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -18,6 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest
 @Import(SecurityConfiguration.class)
+@TestPropertySource(properties = "SHORTY_ADMIN_PASSWORD=1234")
 class LinkControllerTest {
 
     @Autowired
@@ -53,6 +55,17 @@ class LinkControllerTest {
         ).andExpect(status().is4xxClientError());
     }
 
+
+    @Test
+    void testNewLinkAnonymousWithCsrfIsRejected() throws Exception {
+        mvc.perform(
+                post("/")
+                        .param("abbreviation", "abc")
+                        .param("url", "http://www.abc.de")
+                        .with(csrf())
+        ).andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/login"));
+    }
 
     @Test
     @WithMockUser(roles = "ADMIN")

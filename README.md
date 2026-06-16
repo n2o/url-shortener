@@ -19,16 +19,18 @@ A running Redis instance is required. Start one with:
 docker run -p 6379:6379 redis:alpine
 ```
 
-Then start the application:
+Then start the application. The admin password must be supplied via `SHORTY_ADMIN_PASSWORD` —
+there is no default and the application will not start without it:
 
 ```bash
-./gradlew bootRun
+SHORTY_ADMIN_PASSWORD=change-me ./gradlew bootRun
 ```
 
 ## Usage
 
 Open [http://localhost:8080](http://localhost:8080) and log in as an admin.
-The default credentials are defined in [`application.properties`](src/main/resources/application.properties).
+The admin username (`SHORTY_ADMIN`, default `admin`) and password (`SHORTY_ADMIN_PASSWORD`, required)
+are configured via environment variables. The password is stored hashed (BCrypt), never in plain text.
 
 In the admin menu you can add new short links. Redirect to the original URL by visiting:
 
