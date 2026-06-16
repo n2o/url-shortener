@@ -1,7 +1,15 @@
 FROM amazoncorretto:25-alpine AS build
 WORKDIR /app
-COPY . .
-RUN ./gradlew bootJar
+
+# Copy only the build configuration first so the dependency download is cached
+# as its own layer; it is reused on every build where these files are unchanged.
+COPY gradlew settings.gradle build.gradle ./
+COPY gradle ./gradle
+RUN ./gradlew --no-daemon dependencies
+
+# Now copy the sources and build the executable jar.
+COPY src ./src
+RUN ./gradlew --no-daemon bootJar
 
 FROM amazoncorretto:25-alpine
 WORKDIR /code

@@ -4,9 +4,17 @@ services:
     command: redis-server --appendonly yes
     volumes:
       - ./db/data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
   web:
     image: ghcr.io/n2o/url-shortener:latest
     ports:
       - "8080:8080"
     env_file:
       - production.env
+    depends_on:
+      redis:
+        condition: service_healthy
