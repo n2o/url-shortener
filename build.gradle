@@ -41,6 +41,11 @@ dependencies {
     testImplementation 'com.tngtech.archunit:archunit-junit5:1.4.1'
 
     implementation 'com.github.slugify:slugify:3.0.7'
+
+    // Bootstrap is served from a managed WebJar (no vendored node_modules).
+    // webjars-locator-lite enables version-agnostic /webjars/** URLs.
+    implementation 'org.webjars:bootstrap:5.3.3'
+    implementation 'org.webjars:webjars-locator-lite'
 }
 
 test {

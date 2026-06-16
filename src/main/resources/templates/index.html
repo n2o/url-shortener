@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <title>Shorty</title>
-  <link href="../static/node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"
-        th:href="@{node_modules/bootstrap/dist/css/bootstrap.min.css}">
+  <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet"
+        th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
 </head>
 <body>
 <div class="container pt-3">
@@ -29,11 +29,11 @@
 
   <div sec:authorize="isAnonymous()">
     <form th:action="@{/login}" method="post">
-      <div class="form-group">
+      <div class="mb-3">
         <label for="username">Username</label>
         <input type="text" id="username" name="username" class="form-control"/>
       </div>
-      <div class="form-group">
+      <div class="mb-3">
         <label for="password">Password</label>
         <input type="password" class="form-control" id="password" name="password"/>
       </div>
@@ -58,13 +58,13 @@
   <div sec:authorize="hasRole('ADMIN')" id="new-link">
     <form method="post" th:action="@{/}"
           th:object="${link}">
-      <div class="form-group">
+      <div class="mb-3">
         <label for="url">Add the destination URL of your short link</label>
         <input class="form-control" id="url" name="url" placeholder="URL, e.g. 'https://google.de'" required
                th:errorclass="is-invalid" th:value="*{url}" type="url">
         <span class="text-danger" th:errors="*{url}" th:if="${#fields.hasErrors('url')}"></span>
       </div>
-      <div class="form-group">
+      <div class="mb-3">
         <label for="abbreviation">Please add an (optional) name for your short link</label>
         <input class="form-control" id="abbreviation" name="abbreviation" placeholder="Abbreviation, e.g. 'foo'"
                th:errorclass="is-invalid" th:maxlength="${maxAbbreviationLength}" th:value="*{abbreviation}"
