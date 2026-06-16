@@ -6,7 +6,12 @@ plugins {
 
 group = 'de.hhu.propra'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = JavaVersion.VERSION_25
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(25)
+    }
+}
 
 configurations {
     compileOnly {
@@ -32,7 +37,7 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
     testImplementation 'org.springframework.boot:spring-boot-starter-security-test'
-    testImplementation group: 'com.tngtech.archunit', name: 'archunit-junit5', version: '1.4.1'
+    testImplementation 'com.tngtech.archunit:archunit-junit5:1.4.1'
 
     implementation 'com.github.slugify:slugify:3.0.7'
 }

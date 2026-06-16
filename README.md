@@ -11,7 +11,8 @@ Only authenticated admins can create or delete short links.
 ## Installation
 
 > [!NOTE]
-> You need **JDK 25+** and **Gradle 8.14+** to build this project.
+> You need **JDK 25+** to build this project. The bundled Gradle wrapper provides Gradle 9.5,
+> so no separate Gradle installation is required — just run `./gradlew`.
 
 A running Redis instance is required. Start one with:
 

@@ -4,7 +4,7 @@
 
 - **Language:** Java 25 (Amazon Corretto)
 - **Framework:** Spring Boot 4.0.3
-- **Build:** Gradle 8.14.4
+- **Build:** Gradle 9.5.1 (via wrapper); Java toolchain pins JDK 25
 - **Database:** Redis
 - **Template Engine:** Thymeleaf + Spring Security dialect
 - **Security:** Spring Security 7 (form login)
