@@ -2,6 +2,7 @@ plugins {
     id 'org.springframework.boot' version '4.0.3'
     id 'io.spring.dependency-management' version '1.1.7'
     id 'java'
+    id 'jacoco'
 }
 
 group = 'de.hhu.propra'
@@ -44,4 +45,41 @@ dependencies {
 
 test {
     useJUnitPlatform()
+    finalizedBy jacocoTestReport
 }
+
+// Exclude the Spring Boot bootstrap class (just main()) from coverage accounting.
+def coverageExclusions = ['de/hhu/propra/link/LinkApplication.class']
+def withoutExcluded = { dirs -> dirs.collect { fileTree(dir: it, exclude: coverageExclusions) } }
+
+jacocoTestReport {
+    dependsOn test
+    reports {
+        xml.required = true
+        html.required = true
+    }
+    afterEvaluate {
+        classDirectories.setFrom(withoutExcluded(classDirectories.files))
+    }
+}
+
+jacocoTestCoverageVerification {
+    dependsOn test
+    afterEvaluate {
+        classDirectories.setFrom(withoutExcluded(classDirectories.files))
+    }
+    violationRules {
+        rule {
+            limit {
+                counter = 'INSTRUCTION'
+                minimum = 0.85
+            }
+            limit {
+                counter = 'BRANCH'
+                minimum = 0.75
+            }
+        }
+    }
+}
+
+check.dependsOn jacocoTestCoverageVerification

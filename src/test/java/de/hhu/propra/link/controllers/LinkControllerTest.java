@@ -205,6 +205,59 @@ class LinkControllerTest {
         verify(linkService, never()).save(any());
     }
 
+    @Test
+    void testDeleteAnonymousWithoutCsrfIsForbidden() throws Exception {
+        mvc.perform(post("/abc/delete"))
+                .andExpect(status().is4xxClientError());
+
+        verify(linkService, never()).delete(any());
+    }
+
+    @Test
+    void testDeleteAnonymousWithCsrfRedirectsToLogin() throws Exception {
+        mvc.perform(post("/abc/delete").with(csrf()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/login"));
+
+        verify(linkService, never()).delete(any());
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    void testDeleteAdminWithoutCsrfIsForbidden() throws Exception {
+        mvc.perform(post("/abc/delete"))
+                .andExpect(status().is(403));
+
+        verify(linkService, never()).delete(any());
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    void testDeleteAdminWithCsrfDeletesExistingLink() throws Exception {
+        Link existing = link("abc", "https://example.com");
+        when(linkService.findById("abc")).thenReturn(Optional.of(existing));
+
+        mvc.perform(post("/abc/delete").with(csrf()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/"))
+                .andExpect(flash().attribute("success", "Successfully deleted short link"));
+
+        verify(linkService).delete(existing);
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    void testDeleteAdminMissingLinkReportsError() throws Exception {
+        when(linkService.findById("missing")).thenReturn(Optional.empty());
+
+        mvc.perform(post("/missing/delete").with(csrf()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/"))
+                .andExpect(flash().attributeExists("error"));
+
+        verify(linkService, never()).delete(any());
+    }
+
     private static Link link(String abbreviation, String url) {
         Link link = new Link();
         link.setAbbreviation(abbreviation);

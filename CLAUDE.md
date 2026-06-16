@@ -14,7 +14,7 @@
 
 ```bash
 ./gradlew build        # Build the project
-./gradlew check        # Run all checks (compile + tests)
+./gradlew check        # Run all checks (compile + tests + JaCoCo coverage gate)
 ./gradlew bootRun      # Run the application (requires Redis)
 ./gradlew bootJar      # Build executable JAR
 ./gradlew test         # Run tests only
