@@ -90,6 +90,26 @@ class LinkControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "ADMIN")
+    void testNewLinkSuccessUsesFlashAttribute() throws Exception {
+        mvc.perform(
+                post("/")
+                        .param("abbreviation", "abc")
+                        .param("url", "http://www.abc.de")
+                        .with(csrf())
+        ).andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/"))
+                .andExpect(flash().attribute("success", "Successfully added a new short link!"));
+    }
+
+    @Test
+    void testIndexHasNoStickyMessages() throws Exception {
+        mvc.perform(get("/"))
+                .andExpect(status().isOk())
+                .andExpect(model().attributeDoesNotExist("success", "error"));
+    }
+
+    @Test
     void testLoginPage() throws Exception {
         mvc.perform(get("/login"))
                 .andExpect(status().isOk())
